@@ -82,6 +82,18 @@ jobs:
         run: |
           make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
 
+      - name: Collect injectable FLEX Loader dylib
+        run: |
+          mkdir -p Tweak/artifacts
+          cp Tweak/.theos/obj/FLEXLoader.dylib Tweak/artifacts/FLEXLoader.dylib
+
+      - name: Upload injectable FLEX Loader dylib
+        uses: actions/upload-artifact@v4
+        with:
+          name: FLEXLoader-dylib
+          path: Tweak/artifacts/FLEXLoader.dylib
+          if-no-files-found: error
+
       - name: Upload FLEX Loader tweak
         uses: actions/upload-artifact@v4
         with:
