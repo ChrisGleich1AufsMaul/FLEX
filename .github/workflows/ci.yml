@@ -48,14 +48,14 @@ jobs:
           path: ${{ env.DERIVED_DATA_PATH }}/Build/Products/Debug-iphonesimulator/FLEX.framework
           if-no-files-found: error
 
-      - name: Run FLEX tests
+      - name: Build FLEX tests
         run: |
-          xcodebuild test \
+          xcodebuild build-for-testing \
             -project FLEX.xcodeproj \
             -scheme FLEXTests \
             -configuration Debug \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$DERIVED_DATA_PATH" \
             CODE_SIGNING_ALLOWED=NO
 
@@ -72,6 +72,10 @@ jobs:
         run: |
           git clone --recursive https://github.com/theos/theos.git "$HOME/theos"
           echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
+
+      - name: Install tweak signing tools
+        run: |
+          brew install ldid
 
       - name: Build FLEX Loader tweak package
         working-directory: Tweak
