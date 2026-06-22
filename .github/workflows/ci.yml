@@ -13,6 +13,9 @@ jobs:
     name: Xcode build and tests
     runs-on: macos-15
 
+    env:
+      DERIVED_DATA_PATH: build/DerivedData
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -35,7 +38,15 @@ jobs:
             -configuration Debug \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$DERIVED_DATA_PATH" \
             CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload FLEX framework
+        uses: actions/upload-artifact@v4
+        with:
+          name: FLEX-framework-debug-iphonesimulator
+          path: ${{ env.DERIVED_DATA_PATH }}/Build/Products/Debug-iphonesimulator/FLEX.framework
+          if-no-files-found: error
 
       - name: Run FLEX tests
         run: |
@@ -45,4 +56,5 @@ jobs:
             -configuration Debug \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -derivedDataPath "$DERIVED_DATA_PATH" \
             CODE_SIGNING_ALLOWED=NO
