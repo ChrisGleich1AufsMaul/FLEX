@@ -7,6 +7,7 @@
 //
 
 #import "FLEXManager+Extensibility.h"
+#import "FLEXExplorerToolbarItemGroup.h"
 #import "FLEXManager+Private.h"
 #import "FLEXNavigationController.h"
 #import "FLEXObjectExplorerFactory.h"
@@ -92,7 +93,28 @@
 #endif
 }
 
-- (void)setSimulatorShortcutsEnabled:(BOOL)simulatorShortcutsEnabled {
+- (void)insertToolbarItemGroup:(FLEXExplorerToolbarItemGroup *)group
++                         atIndex:(NSInteger)index {
++    // Ensure the toolbar exists – if FLEX hasn't been shown yet we create it.
++    FLEXExplorerToolbar *toolbar = self.toolbar;
++    if (!toolbar) {
++        // Show the explorer to force creation of the toolbar.
++        [self showExplorer];
++        toolbar = self.toolbar;
++    }
++
++    NSMutableArray *mutableGroups = [toolbar.toolbarItemGroups mutableCopy];
++    if (index < 0 || index > mutableGroups.count) {
++        [mutableGroups addObject:group];
++    } else {
++        [mutableGroups insertObject:group atIndex:index];
++    }
++    toolbar.toolbarItemGroups = [mutableGroups copy];
++    // Trigger layout update.
++    [toolbar setNeedsLayout];
++}
++
++- (void)setSimulatorShortcutsEnabled:(BOOL)simulatorShortcutsEnabled {
 #if TARGET_OS_SIMULATOR
     [FLEXKeyboardShortcutManager.sharedManager setEnabled:simulatorShortcutsEnabled];
 #endif

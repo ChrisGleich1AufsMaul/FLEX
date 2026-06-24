@@ -14,11 +14,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Users of the toolbar can configure the enabled state
 /// and event target/actions for each item.
+#import "FLEXExplorerToolbarItemGroup.h"
+
 @interface FLEXExplorerToolbar : UIView
 
 /// The items to be displayed in the toolbar. Defaults to:
 /// globalsItem, hierarchyItem, selectItem, moveItem, closeItem
 @property (nonatomic, copy) NSArray<FLEXExplorerToolbarItem *> *toolbarItems;
+/** groups of toolbar items – new, structured API. If set, `toolbarItems` is ignored. */
+@property (nonatomic, copy) NSArray<FLEXExplorerToolbarItemGroup *> *toolbarItemGroups;
 
 /// Toolbar item for selecting views.
 @property (nonatomic, readonly) FLEXExplorerToolbarItem *selectItem;

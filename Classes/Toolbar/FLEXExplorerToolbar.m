@@ -11,6 +11,7 @@
 #import "FLEXExplorerToolbarItem.h"
 #import "FLEXResources.h"
 #import "FLEXUtility.h"
+#import "FLEXExplorerToolbarItemGroup.h"
 
 // Workaround for Xcode < 26, because I don't like Xcode 26 :)
 #if !__has_include(<UIKit/UIGlassEffect.h>)
@@ -123,8 +124,22 @@
         self.selectedViewDescriptionLabel.font = [[self class] descriptionLabelFont];
         [self.selectedViewDescriptionSafeAreaContainer addSubview:self.selectedViewDescriptionLabel];
         
-        // toolbarItems
-        self.toolbarItems = @[_globalsItem, _hierarchyItem, _selectItem, _moveItem, _closeItem];
+        // -----------------
+        // Toolbar‑Gruppen‑Setup – neue, strukturierte API
+        // -----------------
+        FLEXExplorerToolbarItemGroup *navigationGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_globalsItem, _hierarchyItem]
++                                                    accessibilityLabel:NSLocalizedString(@"Navigation", nil)
++                                                        separatorSpacing:12.0];
+
+        FLEXExplorerToolbarItemGroup *actionGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_selectItem, _moveItem, _recentItem]
++                                                   accessibilityLabel:NSLocalizedString(@"Aktionen", nil)
++                                                       separatorSpacing:12.0];
+
+        FLEXExplorerToolbarItemGroup *systemGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_closeItem]
++                                                  accessibilityLabel:NSLocalizedString(@"System", nil)
++                                                      separatorSpacing:0.0];
+
+        self.toolbarItemGroups = @[navigationGroup, actionGroup, systemGroup];
     }
 
     return self;
@@ -149,18 +164,26 @@
     self.dragHandleImageView.frame = dragHandleImageFrame;
 
 
-    // Toolbar Items
+    // -----------------
+    // Layout über die definierten Gruppen hinweg
+    // -----------------
     CGFloat originX = CGRectGetMaxX(self.dragHandle.frame);
     CGFloat originY = CGRectGetMinY(safeArea) + topPadding;
     CGFloat height = kToolbarItemHeight;
-    CGFloat width = FLEXFloor((CGRectGetWidth(safeArea) - CGRectGetWidth(self.dragHandle.frame)) / self.toolbarItems.count);
-    for (FLEXExplorerToolbarItem *toolbarItem in self.toolbarItems) {
-        toolbarItem.currentItem.frame = CGRectMake(originX, originY, width, height);
-        originX = CGRectGetMaxX(toolbarItem.currentItem.frame);
+    CGFloat width = FLEXFloor((CGRectGetWidth(safeArea) - CGRectGetWidth(self.dragHandle.frame)) / self.toolbarItemGroups.count);
+    for (FLEXExplorerToolbarItemGroup *group in self.toolbarItemGroups) {
+        // Abstand zu vorheriger Gruppe, falls nicht die erste Gruppe.
+        if (originX > CGRectGetMaxX(self.dragHandle.frame)) {
+            originX += group.separatorSpacing;
+        }
+        for (FLEXExplorerToolbarItem *toolbarItem in group.items) {
+            toolbarItem.currentItem.frame = CGRectMake(originX, originY, width, height);
+            originX = CGRectGetMaxX(toolbarItem.currentItem.frame);
+        }
     }
-    
+
     // Make sure the last toolbar item goes to the edge to account for any accumulated rounding effects.
-    UIView *lastToolbarItem = self.toolbarItems.lastObject.currentItem;
+    UIView *lastToolbarItem = self.toolbarItemGroups.lastObject.items.lastObject.currentItem;
     CGRect lastToolbarItemFrame = lastToolbarItem.frame;
     CGFloat rightEdge = CGRectGetMaxX(safeArea);
     if (@available(iOS 26, *)) {

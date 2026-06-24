@@ -7,6 +7,7 @@
 //
 
 #import "FLEXManager.h"
+#import "FLEXExplorerToolbarItemGroup.h"
 #import "FLEXGlobalsEntry.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -101,6 +102,9 @@ typedef BOOL(^FLEXViewFilterPredicate)(UIView *view);
                                   action:(dispatch_block_t)action
                              description:(NSString *)description;
 
+- (void)insertToolbarItemGroup:(FLEXExplorerToolbarItemGroup *)group
++                         atIndex:(NSInteger)index; // -1 → ans Ende anhängen
++
 @end
 
 NS_ASSUME_NONNULL_END
