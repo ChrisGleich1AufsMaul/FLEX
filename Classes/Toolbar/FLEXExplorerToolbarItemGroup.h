@@ -27,18 +27,18 @@
 @property (nonatomic, copy, nullable) NSString *accessibilityLabel;
 
 /** Items belonging to this group. */
-@property (nonatomic, copy) NSArray<FLEXExplorerToolbarItem *> *items;
+@property (nonatomic, copy, nullable) NSArray<FLEXExplorerToolbarItem *> *items;
 
 /** Spacing (in points) placed after this group before the next one. */
 @property (nonatomic) CGFloat separatorSpacing;
 
 /** Designated initializer. */
-- (instancetype)initWithItems:(NSArray<FLEXExplorerToolbarItem *> *)items
-           accessibilityLabel:(nullable NSString *)label
-               separatorSpacing:(CGFloat)spacing NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithItems:(NSArray<FLEXExplorerToolbarItem *> * _Nonnull)items
+              accessibilityLabel:(nullable NSString *)label
+                  separatorSpacing:(CGFloat)spacing NS_DESIGNATED_INITIALIZER;
 
 /** Convenience constructor. */
-+ (instancetype)groupWithItems:(NSArray<FLEXExplorerToolbarItem *> *)items
++ (instancetype)groupWithItems:(NSArray<FLEXExplorerToolbarItem *> * _Nonnull)items
               accessibilityLabel:(nullable NSString *)label
                   separatorSpacing:(CGFloat)spacing;
 

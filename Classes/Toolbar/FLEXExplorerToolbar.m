@@ -127,17 +127,9 @@
         // -----------------
         // Toolbar‑Gruppen‑Setup – neue, strukturierte API
         // -----------------
-        FLEXExplorerToolbarItemGroup *navigationGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_globalsItem, _hierarchyItem]
-accessibilityLabel:NSLocalizedString(@"Navigation", nil)
-+                                                        separatorSpacing:12.0];
-
-        FLEXExplorerToolbarItemGroup *actionGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_selectItem, _moveItem, _recentItem]
-+                                                   accessibilityLabel:NSLocalizedString(@"Aktionen", nil)
-+                                                       separatorSpacing:12.0];
-
-        FLEXExplorerToolbarItemGroup *systemGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_closeItem]
-+                                                  accessibilityLabel:NSLocalizedString(@"System", nil)
-+                                                      separatorSpacing:0.0];
+        FLEXExplorerToolbarItemGroup *navigationGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_globalsItem, _hierarchyItem] accessibilityLabel:NSLocalizedString(@"Navigation", nil) separatorSpacing:12.0];
+        FLEXExplorerToolbarItemGroup *actionGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_selectItem, _moveItem, _recentItem] accessibilityLabel:NSLocalizedString(@"Aktionen", nil) separatorSpacing:12.0];
+        FLEXExplorerToolbarItemGroup *systemGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_closeItem] accessibilityLabel:NSLocalizedString(@"System", nil) separatorSpacing:0.0];
 
         self.toolbarItemGroups = @[navigationGroup, actionGroup, systemGroup];
     }
