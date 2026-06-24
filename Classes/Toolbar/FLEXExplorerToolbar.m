@@ -128,7 +128,7 @@
         // Toolbar‑Gruppen‑Setup – neue, strukturierte API
         // -----------------
         FLEXExplorerToolbarItemGroup *navigationGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_globalsItem, _hierarchyItem]
-+                                                    accessibilityLabel:NSLocalizedString(@"Navigation", nil)
+accessibilityLabel:NSLocalizedString(@"Navigation", nil)
 +                                                        separatorSpacing:12.0];
 
         FLEXExplorerToolbarItemGroup *actionGroup = [FLEXExplorerToolbarItemGroup groupWithItems:@[_selectItem, _moveItem, _recentItem]
