@@ -134,6 +134,9 @@ The code injection is left as an exercise for the reader. :innocent:
 
 ## Installation
 
+- FLEX now supports iOS 26 and later.
+- Additionally, FLEX can be used inside a Livecontainer for rapid debugging of containerized iOS apps.
+
 FLEX requires an app that targets iOS 9 or higher. To run the Example project, open a Terminal window in the Example/ folder and run `pod install`, then open the generated workspace.
 
 ### CocoaPods
