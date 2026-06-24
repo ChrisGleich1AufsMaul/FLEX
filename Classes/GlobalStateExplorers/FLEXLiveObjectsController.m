@@ -66,10 +66,6 @@ static const NSInteger kFLEXLiveObjectsSortBySizeIndex = 2;
     
     // Enumerate all objects on the heap to build the counts of instances for each class.
     [FLEXHeapEnumerator enumerateLiveObjectsUsingBlock:^(__unsafe_unretained id object, __unsafe_unretained Class actualClass) {
-        if (!actualClass) {
-            return;
-        }
-
         NSUInteger instanceCount = (NSUInteger)CFDictionaryGetValue(mutableCountsForClasses, (__bridge const void *)actualClass);
         instanceCount++;
         CFDictionarySetValue(mutableCountsForClasses, (__bridge const void *)actualClass, (const void *)instanceCount);
@@ -80,13 +76,8 @@ static const NSInteger kFLEXLiveObjectsSortBySizeIndex = 2;
     NSMutableDictionary<NSString *, NSNumber *> *mutableSizesForClassNames = [NSMutableDictionary new];
     for (unsigned int i = 0; i < classCount; i++) {
         Class class = classes[i];
-        const char *classNameCString = class_getName(class);
-        if (!classNameCString) {
-            continue;
-        }
-
         NSUInteger instanceCount = (NSUInteger)CFDictionaryGetValue(mutableCountsForClasses, (__bridge const void *)(class));
-        NSString *className = @(classNameCString);
+        NSString *className = @(class_getName(class));
         if (instanceCount > 0) {
             [mutableCountsForClassNames setObject:@(instanceCount) forKey:className];
         }
