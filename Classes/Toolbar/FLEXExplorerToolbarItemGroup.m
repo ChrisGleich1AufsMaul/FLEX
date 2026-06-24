@@ -16,7 +16,7 @@
 
 #pragma mark - Init / Convenience
 
-- (instancetype)initWithItems:(NSArray<FLEXExplorerToolbarItem *> *)items
+- (instancetype)initWithItems:(NSArray<FLEXExplorerToolbarItem *> * _Nonnull)items
            accessibilityLabel:(nullable NSString *)label
                separatorSpacing:(CGFloat)spacing {
     self = [super init];
@@ -28,7 +28,7 @@
     return self;
 }
 
-+ (instancetype)groupWithItems:(NSArray<FLEXExplorerToolbarItem *> *)items
++ (instancetype)groupWithItems:(NSArray<FLEXExplorerToolbarItem *> * _Nonnull)items
               accessibilityLabel:(nullable NSString *)label
                   separatorSpacing:(CGFloat)spacing {
     return [[self alloc] initWithItems:items accessibilityLabel:label separatorSpacing:spacing];

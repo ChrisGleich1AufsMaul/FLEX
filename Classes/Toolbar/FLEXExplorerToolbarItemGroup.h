@@ -13,8 +13,11 @@
 //  next group when the toolbar is laid out.
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class FLEXExplorerToolbarItem;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  * A logical grouping of toolbar items. The toolbar renders groups sequentially
@@ -43,3 +46,5 @@
                   separatorSpacing:(CGFloat)spacing;
 
 @end
+
+NS_ASSUME_NONNULL_END
