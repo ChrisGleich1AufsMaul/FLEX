@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class FLEXExplorerToolbarItem;
+@class FLEXExplorerToolbarItemGroup;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Users of the toolbar can configure the enabled state
 /// and event target/actions for each item.
-#import "FLEXExplorerToolbarItemGroup.h"
 
 @interface FLEXExplorerToolbar : UIView
 

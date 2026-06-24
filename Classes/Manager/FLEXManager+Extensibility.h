@@ -7,8 +7,8 @@
 //
 
 #import "FLEXManager.h"
-#import "FLEXExplorerToolbarItemGroup.h"
 #import "FLEXGlobalsEntry.h"
+#import "FLEXExplorerToolbarItemGroup.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
