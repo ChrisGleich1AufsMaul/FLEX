@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "FLEXObjectExplorer.h"
 
+// Forward declaration to resolve unknown type name
+@class FLEXRecommendation;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FLEXRecommendationEngine : NSObject
