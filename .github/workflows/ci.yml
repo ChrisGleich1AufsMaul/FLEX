@@ -24,7 +24,6 @@ jobs:
         run: |
           xcodebuild -version
           xcodebuild -showsdks
-
       - name: Build FLEX framework
         run: |
           xcodebuild build \
@@ -35,7 +34,6 @@ jobs:
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$DERIVED_DATA_PATH" \
             CODE_SIGNING_ALLOWED=NO
-
       - name: Upload FLEX framework
         uses: actions/upload-artifact@v6
         with:
@@ -53,8 +51,6 @@ jobs:
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$DERIVED_DATA_PATH" \
             CODE_SIGNING_ALLOWED=NO
-
-
   tweak:
     name: Theos tweak package
     runs-on: macos-15
@@ -67,21 +63,17 @@ jobs:
         run: |
           git clone --recursive https://github.com/theos/theos.git "$HOME/theos"
           echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
-
       - name: Install tweak signing tools
         run: |
           brew install ldid
-
       - name: Build FLEX Loader tweak package
         working-directory: Tweak
         run: |
           make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
-
       - name: Collect injectable FLEX Loader dylib
         run: |
           mkdir -p Tweak/artifacts
           cp Tweak/.theos/obj/FLEXLoader.dylib Tweak/artifacts/FLEXLoader.dylib
-
       - name: Upload injectable FLEX Loader dylib
         uses: actions/upload-artifact@v6
         with:
