@@ -10,174 +10,130 @@
 #import "FLEXRecommendation.h"
 #import "FLEXObjectExplorer.h"
 #import "FLEXUtility.h"
-#import "FLEXMultilineTableViewCell.h"
 #import "FLEXSingleRowSection.h"
 
-// Helper functions for parsing JSON recommendations
-__attribute__((weak))
-- (NSString *)parseRecommendationsJSON:(NSString *)json
-                                 forObject:(id)object {
-    // This method is kept simple to support basic JSON parsing for recommendations
-    // Advanced logic can be added for complex scenarios or ML-based suggestions.
-    return json;
-}
+NS_ASSUME_NONNULL_BEGIN
 
-- (NSArray<FLEXRecommendation *> *)suggestionsForObject:(id)object
-                        context:(nullable id)context {
+@implementation FLEXRecommendationEngine
 
-    // Contextual classification based on object type
+- (NSArray<FLEXRecommendation *> *)suggestionsForObject:(id)object context:(nullable id)context {
     NSString *objectType = [FLEXUtility safeClassNameForObject:object];
-    NSUInteger recommendationCount = 3;
+    NSUInteger maxCount = 3;
 
-    // Generate type-specific recommendations
-    if ([objectType isEqualToString:@"EXISTS_FLEXUIButton"]) {
+    if ([objectType isEqualToString:@"UIButton"]) {
         return [self generateUIButtonRecommendations:object type:objectType];
     } else if ([objectType isEqualToString:@"UIView"]) {
         return [self generateUIViewRecommendations:object type:objectType];
     } else if ([objectType isEqualToString:@"UIViewController"]) {
         return [self generateUIViewControllerRecommendations:object type:objectType];
     } else {
-        return [self generateGenericRecommendations:object type:objectType count:recommendationCount];
+        return [self generateGenericRecommendations:object type:objectType count:maxCount];
     }
 }
 
-- (NSArray<FLEXRecommendation *> *)generateUIButtonRecommendations:(id)object
-                                                                type:(NSString *)type {
-    NSMutableArray *recommendations = [NSMutableArray array];
+- (NSArray<FLEXRecommendation *> *)generateUIButtonRecommendations:(id)object type:(NSString *)type {
+    NSMutableArray<FLEXRecommendation *> *recommendations = [NSMutableArray array];
 
-    // Recommend: Constrained size from current layout constraints
     FLEXRecommendation *size = [FLEXRecommendation createWithTitle:@"Constrained Size"
-                                                      subtitle:@"Apply layout constraints to tight/layout the button"
-                                               relevantObject:object
-                                                  action:@""];
-
-    // Recommend: Target handler registration for user actions
+                                                        subtitle:@"Add Auto‑Layout constraints to define the button size"
+                                                 relevantObject:object
+                                                            action:@"SIZE_SETUP"];
     FLEXRecommendation *handler = [FLEXRecommendation createWithTitle:@"Touch Handler"
-                                                      subtitle:@"Add target-action for user interactions"
-                                               relevantObject:object
-                                                  action:@""];
-
-    // Recommend: State configuration for visual feedback
+                                                              subtitle:@"Add target‑action for user interaction"
+                                                       relevantObject:object
+                                                            action:@"HANDLER_SETUP"];
     FLEXRecommendation *state = [FLEXRecommendation createWithTitle:@"Button State"
-                                                      subtitle:@"Configure normal/highlighted/disabled states"
-                                               relevantObject:object
-                                                  action:@""];
+                                                            subtitle:@"Configure normal / highlighted / disabled states"
+                                                     relevantObject:object
+                                                            action:@"STATE_SETUP"];
 
-    [recommendations addObjects:@[size, handler, state]];
+    [recommendations addObjectsFromArray:@[size, handler, state]];
     return recommendations;
 }
 
-- (NSArray<FLEXRecommendation *> *)generateUIViewRecommendations:(id)object
-                                                                type:(NSString *)type {
-    NSMutableArray *recommendations = [NSMutableArray array];
+- (NSArray<FLEXRecommendation *> *)generateUIViewRecommendations:(id)object type:(NSString *)type {
+    NSMutableArray<FLEXRecommendation *> *recommendations = [NSMutableArray array];
 
-    // Recommend: Auto Layout setup
-    FLEXRecommendation *autolayout = [FLEXRecommendation createWithTitle:@"Auto Layout"
-                                                      subtitle:@"Configure frame/constraints with priority"
-                                               relevantObject:object
-                                                  action:@""];
-
-    // Recommend: Background customization
+    FLEXRecommendation *autoLayout = [FLEXRecommendation createWithTitle:@"Auto Layout"
+                                                                 subtitle:@"Add constraints or adjust frames"
+                                                            relevantObject:object
+                                                                 action:@"AUTOLAYOUT_SETUP"];
     FLEXRecommendation *background = [FLEXRecommendation createWithTitle:@"Background"
-                                                      subtitle:@"Set background color/image or alpha"
-                                               relevantObject:object
-                                                  action:@""];
-
-    // Recommend: Corner radius/bezel style
+                                                                   subtitle:@"Set background colour / image / alpha"
+                                                            relevantObject:object
+                                                                 action:@"BACKGROUND_SETUP"];
     FLEXRecommendation *corners = [FLEXRecommendation createWithTitle:@"Corners"
-                                                      subtitle:@"Add corner radius/border for modern appearance"
-                                               relevantObject:object
-                                                  action:@""];
+                                                                subtitle:@"Add corner radius / border styling"
+                                                         relevantObject:object
+                                                                action:@"CORNER_SETUP"];
 
-    [recommendations addObjects:@[autolayout, background, corners]];
+    [recommendations addObjectsFromArray:@[autoLayout, background, corners]];
     return recommendations;
 }
 
-- (NSArray<FLEXRecommendation *> *)generateUIViewControllerRecommendations:(id)object
-                                                                    type:(NSString *)type {
-    NSMutableArray *recommendations = [NSMutableArray array];
+- (NSArray<FLEXRecommendation *> *)generateUIViewControllerRecommendations:(id)object type:(NSString *)type {
+    NSMutableArray<FLEXRecommendation *> *recommendations = [NSMutableArray array];
 
-    // Recommend: Navigation setup
     FLEXRecommendation *navigation = [FLEXRecommendation createWithTitle:@"Navigation"
-                                                      subtitle:@"Configure navigation bar/hierarchy stack"
-                                               relevantObject:object
-                                                  action:@""];
-
-    // Recommend: Outlet connections
+                                                                   subtitle:@"Configure navigation bar items / hierarchy"
+                                                            relevantObject:object
+                                                                 action:@"NAVIGATION_SETUP"];
     FLEXRecommendation *outlets = [FLEXRecommendation createWithTitle:@"Outlets"
-                                                      subtitle:@"Connect IB outlets for easier inspection"
-                                               relevantObject:object
-                                                  action:@""];
-
-    // Recommend: Lifecycle hooks
+                                                                subtitle:@"Connect IBOutlets for easier inspection"
+                                                         relevantObject:object
+                                                                action:@"OUTLETS_SETUP"];
     FLEXRecommendation *lifecycle = [FLEXRecommendation createWithTitle:@"Lifecycle"
-                                                      subtitle:@"Implement viewDidLoad/didAppear handling"
-                                               relevantObject:object
-                                                  action:@""];
+                                                                  subtitle:@"Add viewDidLoad / viewWillAppear hooks"
+                                                               relevantObject:object
+                                                                    action:@"LIFECYCLE_SETUP"];
 
-    [recommendations addObjects:@[navigation, outlets, lifecycle]];
+    [recommendations addObjectsFromArray:@[navigation, outlets, lifecycle]];
     return recommendations;
 }
 
-- (NSArray<FLEXRecommendation *> *)generateGenericRecommendations:(id)object
-                                                                 type:(NSString *)type
-                                                            count:(NSUInteger)maxCount {
-    NSMutableArray *recommendations = [NSMutableArray array];
+- (NSArray<FLEXRecommendation *> *)generateGenericRecommendations:(id)object type:(NSString *)type count:(NSUInteger)maxCount {
+    NSMutableArray<FLEXRecommendation *> *recommendations = [NSMutableArray array];
 
-    // Recommend: Method introspection
-    FLEXRecommendation *method = [FLEXRecommendation createWithTitle:@"Methods"
-                                                      subtitle:@"Explore instance/class methods for this object"
-                                               relevantObject:object
-                                                  action:@""];
-
-    // Recommend: Property inspection
+    FLEXRecommendation *methods = [FLEXRecommendation createWithTitle:@"Methods"
+                                                              subtitle:@"Inspect / invoke instance & class methods"
+                                                       relevantObject:object
+                                                            action:@"METHODS_INSPECT"];
     FLEXRecommendation *properties = [FLEXRecommendation createWithTitle:@"Properties"
-                                                      subtitle:@"Review properties/ivars for modification"
-                                               relevantObject:object
-                                                  action:@""];
-
-    // Recommend: Reference exploration
+                                                                 subtitle:@"View / edit ivars & properties"
+                                                              relevantObject:object
+                                                                 action:@"PROPERTIES_EDIT"];
     FLEXRecommendation *references = [FLEXRecommendation createWithTitle:@"References"
-                                                      subtitle:@"Find live objects referencing this object"
-                                               relevantObject:object
-                                                  action:@""];
+                                                                   subtitle:@"Find live objects referencing this instance"
+                                                              relevantObject:object
+                                                                 action:@"REFERENCES_FIND"];
 
-    [recommendations addObjects:@[method, properties, references]];
+    [recommendations addObjectsFromArray:@[methods, properties, references]];
 
-    // Limit based on count
     if (recommendations.count > maxCount) {
         return [recommendations subarrayWithRange:NSMakeRange(0, maxCount)];
     }
     return recommendations;
 }
 
-void AddRecommendationsToSections:(NSMutableArray<FLEXTableViewSection *> *)customSections
-                          forObject:(id)object {
-    // Create recommendation engine and generate sections
++ (void)addRecommendationsToSections:(NSMutableArray<FLEXTableViewSection *> *)customSections forObject:(id)object {
     FLEXRecommendationEngine *engine = [[FLEXRecommendationEngine alloc] init];
-    NSArray<FLEXRecommendation *> *recommendations = [engine suggestionsForObject:object context:nil];
+    NSArray<FLEXRecommendation *> *recs = [engine suggestionsForObject:object context:nil];
 
-    // Create recommendation sections and add to array
-    for (FLEXRecommendation *rec in recommendations) {
-        FLEXSingleRowSection *section = [FLEXSingleRowSection
-            title:rec.title
-            reuse:kFLEXDefaultCell
-            cell:^(FLEXTableViewCell *cell) {
-                cell.titleLabel.text = rec.title;
-                cell.titleLabel.font = UIFont.flex_defaultTableCellFont;
-            }
-        ];
-
-        section.selectionAction = ^(__kindof UIViewController *host) {
-            // Dispatch to recommendation-specific handler
-            if ([rec.action isEqualToString:@"BUTTON_SETUP"]) {
-                // Direct to existing method setup handling
-                [[FLEXManager sharedManager] showExplorerForObject:rec.relevantObject];
-            }
+    for (FLEXRecommendation *rec in recs) {
+        FLEXSingleRowSection *section = [[FLEXSingleRowSection alloc] init];
+        section.title = rec.title;
+        section.reuseIdentifier = kFLEXDefaultCell;
+        section.cellConfiguration = ^(FLEXTableViewCell *cell) {
+            cell.titleLabel.text = rec.title;
+            cell.titleLabel.font = UIFont.flex_defaultTableCellFont;
         };
-
+        section.selectionAction = ^(__kindof UIViewController *host) {
+            [[FLEXManager sharedManager] showExplorerForObject:rec.relevantObject];
+        };
         [customSections addObject:section];
     }
 }
+
+@end
 
 NS_ASSUME_NONNULL_END
