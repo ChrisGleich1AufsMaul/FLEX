@@ -12,7 +12,6 @@
 #import "FLEXUtility.h"
 #import "FLEXMultilineTableViewCell.h"
 #import "FLEXSingleRowSection.h"
-#import "FLEXSingleRowSection+FLEX.h"
 
 // Helper functions for parsing JSON recommendations
 __attribute__((weak))
