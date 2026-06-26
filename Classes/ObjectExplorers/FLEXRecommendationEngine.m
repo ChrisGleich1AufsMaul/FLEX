@@ -11,6 +11,9 @@
 #import "FLEXObjectExplorer.h"
 #import "FLEXUtility.h"
 #import "FLEXSingleRowSection.h"
+#import "FLEXRuntimeUtility.h"
+#import "FLEXTableView.h"
+#import "FLEXManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
