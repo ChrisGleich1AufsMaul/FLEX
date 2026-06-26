@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation FLEXRecommendationEngine
 
 - (NSArray<FLEXRecommendation *> *)suggestionsForObject:(id)object context:(nullable id)context {
-    NSString *objectType = [FLEXUtility safeClassNameForObject:object];
+    NSString *objectType = [FLEXRuntimeUtility safeClassNameForObject:object];
     NSUInteger maxCount = 3;
 
     if ([objectType isEqualToString:@"UIButton"]) {
@@ -120,13 +120,12 @@ NS_ASSUME_NONNULL_BEGIN
     NSArray<FLEXRecommendation *> *recs = [engine suggestionsForObject:object context:nil];
 
     for (FLEXRecommendation *rec in recs) {
-        FLEXSingleRowSection *section = [[FLEXSingleRowSection alloc] init];
-        section.title = rec.title;
-        section.reuseIdentifier = kFLEXDefaultCell;
-        section.cellConfiguration = ^(FLEXTableViewCell *cell) {
+        FLEXSingleRowSection *section = [[FLEXSingleRowSection alloc] initWithTitle:rec.title
+                                                                           reuseIdentifier:kFLEXDefaultCell
+                                                                            cellConfiguration:^(@escaping (FLEXTableViewCell *cell) {
             cell.titleLabel.text = rec.title;
             cell.titleLabel.font = UIFont.flex_defaultTableCellFont;
-        };
+        })];
         section.selectionAction = ^(__kindof UIViewController *host) {
             [[FLEXManager sharedManager] showExplorerForObject:rec.relevantObject];
         };
