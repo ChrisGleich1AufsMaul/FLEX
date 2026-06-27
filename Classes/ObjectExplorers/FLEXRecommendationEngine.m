@@ -125,10 +125,10 @@ NS_ASSUME_NONNULL_BEGIN
     for (FLEXRecommendation *rec in recs) {
         FLEXSingleRowSection *section = [[FLEXSingleRowSection alloc] initWithTitle:rec.title
                                                                            reuseIdentifier:kFLEXDefaultCell
-                                                                            cellConfiguration:^(@escaping (FLEXTableViewCell *cell) {
+                                                                          cellConfiguration:^ (FLEXTableViewCell *cell) {
             cell.titleLabel.text = rec.title;
             cell.titleLabel.font = UIFont.flex_defaultTableCellFont;
-        })];
+        }];
         section.selectionAction = ^(__kindof UIViewController *host) {
             [[FLEXManager sharedManager] showExplorerForObject:rec.relevantObject];
         };
